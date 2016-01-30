@@ -1,0 +1,13 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300);
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  margin: 5%;
+}
+
+h1, h2, h3 {
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-weight: 300;
+  white-space: nowrap;
+}

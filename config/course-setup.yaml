@@ -1,0 +1,12 @@
+# Course Configuration
+#
+# Customize me!
+
+# location of Git repos on disk
+git: /mit/6.EXOUT/git/ia00
+# location of exout on the web
+http: https://example.com/exout
+
+# optional: instructions to the student
+#instructions: >
+#  <p>Have fun!</p>
