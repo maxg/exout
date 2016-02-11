@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 @import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300);
+@import url(https://fonts.googleapis.com/css?family=Inconsolata);
 
 body {
   font-family: 'Open Sans', sans-serif;
@@ -11,3 +12,10 @@ h1, h2, h3 {
   font-weight: 300;
   white-space: nowrap;
 }
+
+code {
+  font-family: Inconsolata, monospace;
+  font-size: 110%;
+}
+
+#url { margin: 0 1em; }
