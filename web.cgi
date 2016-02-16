@@ -17,6 +17,7 @@ _, kind, proj = cgi.path_info.split('/')
 
 user = ENV['SSL_CLIENT_S_DN_Email'].sub('@MIT.EDU', '')
 starting = [ CONF['git'], kind, proj, 'exout', START + '.git' ].join('/')
+valid = File.directory?(starting) && File.file?([ starting, FLAG ].join('/'))
 instructions = [ CONF['git'], kind, proj, 'exout', 'instructions.html' ].join('/')
 path = [ kind, proj, user + '.git' ].join('/')
 dest = [ CONF['git'], path ].join('/')
@@ -28,10 +29,11 @@ url = "#{CONF['http']}/git/#{hmac}/#{path}"
 cgi.out {
   cgi.html {
     cgi.head {
+      cgi.title { if valid then "#{kind}/#{proj}" else 'Error' end + ' - exout' } +
       cgi.link('href' => "#{CONF['http']}/public/style.css", 'rel' => 'stylesheet')
     } +
     cgi.body {
-      if ! (File.directory?(starting) && File.file?([ starting, FLAG ].join('/')))
+      if ( ! valid)
         cgi.h2 { 'Error: no such exercise' }
       else
         if ( ! File.directory?(dest)) && ( ! system('cp', '-rT', starting, dest))
