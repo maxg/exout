@@ -1,11 +1,5 @@
 SSLRequireSSL
 
-<Files web-cert.cgi>
-  AuthType SSLCert
-  Require valid-user
-  ErrorDocument 401 /__scripts/needcerts
-</Files>
-
 RewriteEngine On
 RewriteRule ^web/(.*) /exout/web-shib.cgi/$1 [L,PT]
 RewriteRule ^git/(.*) /exout/git.cgi/$1 [L,PT]
