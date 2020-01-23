@@ -4,6 +4,10 @@ require 'cgi'
 require 'openssl'
 require 'yaml'
 
+cgi = CGI.new('html5')
+
+user = ENV['SSL_CLIENT_S_DN_Email'].sub('@MIT.EDU', '')
+
 CONF = YAML.load_file('config/course-setup.yaml')
 KEY = IO.read('config/key.txt')
 
@@ -11,11 +15,8 @@ SHA1 = OpenSSL::Digest::SHA1.new
 START = 'starting'
 FLAG = 'git-daemon-export-ok'
 
-cgi = CGI.new('html5')
+_, mode, kind, proj = cgi.path_info.split('/')
 
-_, kind, proj = cgi.path_info.split('/')
-
-user = ENV['SSL_CLIENT_S_DN_Email'].sub('@MIT.EDU', '')
 starting = [ CONF['git'], kind, proj, 'exout', START + '.git' ].join('/')
 valid = File.directory?(starting) && File.file?([ starting, FLAG ].join('/'))
 instructions = [ CONF['git'], kind, proj, 'exout', 'instructions.html' ].join('/')
@@ -24,7 +25,7 @@ dest = [ CONF['git'], path ].join('/')
 
 hmac = OpenSSL::HMAC.hexdigest(SHA1, KEY, path)[16, 16]
 
-url = "#{CONF['http']}/git/#{hmac}/#{path}"
+url = "#{CONF['http']}/git/#{mode}/#{hmac}/#{path}"
 
 cgi.out {
   cgi.html {
@@ -36,7 +37,7 @@ cgi.out {
       if ( ! valid)
         cgi.h2 { 'Error: no such exercise' }
       else
-        if ( ! File.directory?(dest)) && ( ! system('cp', '-rT', starting, dest))
+        if (mode == 'w') && ( ! File.directory?(dest)) && ( ! system('cp', '-rT', starting, dest))
           cgi.h2 { 'Error copying starting repository' }
         else
           cgi.p { "Your #{proj} Git repository URL is:" } +
