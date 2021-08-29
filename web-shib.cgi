@@ -51,7 +51,7 @@ cgi.out {
           cgi.h2 { 'Error copying starting repository' }
         else
           cgi.p { "Your #{proj} Git repository URL is:" } +
-          cgi.h2 { '&rarr;' + cgi.span('id' => 'url') { url } + '&larr;' } +
+          cgi.h2 { cgi.span('id' => 'url') { url } } +
           cgi.p { 'This is your personal URL. Do not share it.' } +
           if File.file?(instructions)
             File.read(instructions)
