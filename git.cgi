@@ -11,8 +11,8 @@ SHA1 = OpenSSL::Digest::SHA1.new
 START = 'starting'
 
 _, mode, request_hmac, fullpath = ENV['PATH_INFO'].split('/', 4)
-kind, proj, user, etc = fullpath.split('/', 4)
-path = [ kind, proj, user ].join('/')
+user, kind, proj_git, etc = fullpath.split('/', 4)
+path = [ user, kind, proj_git ].join('/')
 actual_hmac = OpenSSL::HMAC.hexdigest(SHA1, KEY, path)[16, 16]
 
 if request_hmac != actual_hmac
@@ -20,9 +20,11 @@ if request_hmac != actual_hmac
   exit
 end
 
+proj, _ = proj_git.split('.git', 2)
+
 ENV['GIT_PROJECT_ROOT'] = CONF['git']
 if mode == 'w'
-  ENV['PATH_INFO'] = "/#{fullpath}" # remove mode & HMAC from the path
+  ENV['PATH_INFO'] = '/' + [ kind, proj, user + '.git', etc ].join('/')
   ENV['REMOTE_USER'] = user # enable push
 elsif mode == 'r'
   ENV['PATH_INFO'] = '/' + [ kind, proj, 'exout', START + '.git', etc ].join('/')

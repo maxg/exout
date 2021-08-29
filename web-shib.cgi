@@ -30,8 +30,8 @@ _, mode, kind, proj = cgi.path_info.split('/')
 starting = [ CONF['git'], kind, proj, 'exout', START + '.git' ].join('/')
 valid = File.directory?(starting) && File.file?([ starting, FLAG ].join('/'))
 instructions = [ CONF['git'], kind, proj, 'exout', 'instructions.html' ].join('/')
-path = [ kind, proj, user + '.git' ].join('/')
-dest = [ CONF['git'], path ].join('/')
+dest = [ CONF['git'], kind, proj, user + '.git' ].join('/')
+path = [ user, kind, proj + '.git' ].join('/')
 
 hmac = OpenSSL::HMAC.hexdigest(SHA1, KEY, path)[16, 16]
 
