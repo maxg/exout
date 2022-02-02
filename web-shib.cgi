@@ -50,13 +50,14 @@ cgi.out {
         if (mode == 'w') && ( ! File.directory?(dest)) && ( ! system('cp', '-rT', starting, dest))
           cgi.h2 { 'Error copying starting repository' }
         else
-          cgi.p { "Your #{proj} Git repository URL is:" } +
-          cgi.h2 { cgi.span('id' => 'url') { url } } +
-          cgi.p { 'This is your personal URL. Do not share it.' } +
           if File.file?(instructions)
             File.read(instructions)
+          elsif CONF['instructions']
+            CONF['instructions']
           else
-            CONF['instructions'] || ''
+            cgi.p { "Your #{proj} Git repository URL is:" } +
+            cgi.h2 { cgi.span('id' => 'url') { url } } +
+            cgi.p { 'This is your personal URL. Do not share it.' }
           end % { :kind => kind, :proj => proj, :user => user, :url => url }
         end
       end +
